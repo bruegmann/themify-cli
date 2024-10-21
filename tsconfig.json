@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es6", // Target ECMAScript 6
+        "module": "commonjs", // CommonJS modules for Node.js
+        "outDir": "./dist", // Output directory for compiled JavaScript
+        "rootDir": "./src", // Root directory for TypeScript files
+        "esModuleInterop": true, // Allows ES6 module interop (import/export)
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true
+    },
+    "include": ["src/**/*"]
+}

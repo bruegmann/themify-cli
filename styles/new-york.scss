@@ -1,0 +1,21 @@
+// Inspired by shadcn/ui "New York"
+
+@import url(https://rsms.me/inter/inter.css);
+
+:root {
+    --ny-font-family: Inter, sans-serif;
+    font-feature-settings: "liga" 1, "calt" 1; /* fix for Chrome */
+}
+@supports (font-variation-settings: normal) {
+    :root {
+        --ny-font-family: InterVariable, sans-serif;
+    }
+}
+
+$font-family-sans-serif: #{var(--ny-font-family)} !default;
+
+$primary: hsl(240 5.9% 10%) !default;
+$font-size-root: 14px;
+
+$focus-ring-width: 1px !default;
+$focus-ring-opacity: 0.5 !default;
