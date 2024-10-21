@@ -4,6 +4,7 @@ import { Command } from "commander"
 import { compile } from "./compile"
 import packageJson from "../package.json"
 import { bootstrap } from "./bootstrap"
+import { blueWeb } from "./blueWeb"
 
 const program = new Command()
     .name("themify")
@@ -15,6 +16,7 @@ const program = new Command()
     )
     .addCommand(compile)
     .addCommand(bootstrap)
+    .addCommand(blueWeb)
     .parse(process.argv)
 
 // Show help if no command is provided

@@ -21,5 +21,8 @@ export const bootstrap = addSharedToCompile(
             } catch (error: any) {
                 console.error(`Error executing command: ${error.message}`)
             }
-        })
+        }),
+    {
+        output: "bootstrap.css"
+    }
 )

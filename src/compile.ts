@@ -10,27 +10,37 @@ import postcssOnlyVars from "postcss-only-vars"
 import postcssMinify from "postcss-minify"
 import autoprefixer from "autoprefixer"
 import { Command } from "commander"
-import { StyleKey, styleKeys, styles, validateStyle } from "./styles"
+import { Style, StyleKey, styleKeys, styles, validateStyle } from "./styles"
+import prompts from "prompts"
 
 const execPromise = util.promisify(exec)
 
 const currentDir = process.cwd()
 const cliRootDir = path.resolve(__dirname, "..")
 
-type Options = {
+export type Options = {
     primary?: string
     output: string
-    full: boolean
+    full?: boolean
     style?: StyleKey
     minify?: boolean
     importBefore?: string
     importAfter?: string
+    append?: string
     dependencies?: string[]
+    useVersion?: string
 }
 
-export function addSharedToCompile(command: Command) {
+export function addSharedToCompile(
+    command: Command,
+    optionDefaultValues?: Options
+) {
     return command
-        .option("-o, --output <path>", "path to output file", "out.css")
+        .option(
+            "-o, --output <path>",
+            "path to output file",
+            optionDefaultValues?.output || "output.css"
+        )
         .option("-f, --full", "export full CSS, not just the variables")
         .option("-p, --primary <color>", "primary color")
         .option(
@@ -97,27 +107,67 @@ export async function runCompile(
         primary,
         output,
         full,
-        style,
+        style: styleKey,
         minify,
         importBefore,
         importAfter,
+        append,
         dependencies
-    }: Options
+    }: Options,
+    scssBefore: string = ""
 ) {
+    let style: Style | undefined
+
+    if (!styleKey || styleKey === "") {
+        const response = await prompts({
+            type: "select",
+            name: "style",
+            message: "Choose style",
+            choices: [
+                { title: "Default", value: "" },
+                ...styleKeys.map((key) => ({ title: key, value: key }))
+            ]
+        })
+
+        if (response && response.style && styleKeys.includes(response.style)) {
+            styleKey = response.style
+        }
+    }
+    if (styleKey && styleKeys.includes(styleKey)) {
+        style = styles[styleKey]
+    }
+
+    console.log("Compiling...")
+
     if (dependencies) {
         await installDependencies(dependencies)
     }
 
     const outputFilePath = path.resolve(currentDir, output)
 
-    const scssBefore = await scssImport(importBefore)
-    const scssAfter = await scssImport(importAfter)
+    if (styleKey === "new-york") {
+        append = `@import url(https://rsms.me/inter/inter.css);
 
-    const scss = `${scssBefore}${primary ? `$primary: ${primary};` : ""}${
-        style ? styles[style] : ""
+:root {
+    --ny-font-family: Inter, sans-serif;
+    font-feature-settings: "liga" 1, "calt" 1; /* fix for Chrome */
+    font-size: 14px;
+}
+@supports (font-variation-settings: normal) {
+    :root {
+        --ny-font-family: InterVariable, sans-serif;
     }
+}`
+    }
+
+    const importBeforeScss = await scssImport(importBefore)
+    const importAfterScss = await scssImport(importAfter)
+
+    const scss = `${importBeforeScss}${scssBefore}${
+        primary ? `$primary: ${primary};` : ""
+    }${style ? style.scss : ""}
     ${mainScss}
-    ${scssAfter}`
+    ${importAfterScss}`
 
     const sassResult = sass.compileString(scss, {
         loadPaths: [cliRootDir]
@@ -137,6 +187,14 @@ export async function runCompile(
         from: undefined,
         to: outputFilePath
     })
+
+    if (style?.append) {
+        result.css += style.append
+    }
+
+    if (append) {
+        result.css += append
+    }
 
     await fs.writeFile(outputFilePath, result.css)
     if (result.map) {

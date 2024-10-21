@@ -2,7 +2,29 @@
 
 CLI that helps you to add Bootstrap CSS and customize it.
 
-## Usage
+## Get help
+
+Run this to see all available commands and options:
+
+```
+npx themify help
+```
+
+## Blue Web
+
+Run this to create a custom theme CSS file locally:
+
+```
+npx themify blue-web -o my-theme.css
+```
+
+Some prompts will guide you through the process.
+
+## `compile` command
+
+`compile` is the base command. For most cases you should use one of the other commands above instead.
+
+### Usage
 
 When your project not already has a full Bootstrap CSS file, run this to add one:
 
@@ -10,7 +32,7 @@ When your project not already has a full Bootstrap CSS file, run this to add one
 npx themify compile --output bootstrap.min.css --full
 ```
 
-## Add theme
+### Add theme
 
 Choose one of the styles
 
@@ -18,7 +40,7 @@ Choose one of the styles
 npx themify compile -o variables.min.css -s new-york
 ```
 
-## Custom variables
+### Custom variables
 
 Create a file with custom Sass variables:
 
@@ -44,12 +66,4 @@ To override CSS variables, you set a file that should be imported after Bootstra
 
 ```
 npx themify compile -o variables.min.css -s new-york --import-before my-vars.scss --import-after my-css-vars.css
-```
-
-## Get help
-
-Run this to see all available options for the `compile` command:
-
-```
-npx themify help compile
 ```
