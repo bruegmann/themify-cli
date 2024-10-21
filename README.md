@@ -2,12 +2,18 @@
 
 CLI that helps you to add Bootstrap CSS and customize it.
 
+## Install
+
+```
+npm i -g themify-cli
+```
+
 ## Get help
 
 Run this to see all available commands and options:
 
 ```
-npx themify help
+themify help
 ```
 
 ## Blue Web
@@ -15,7 +21,7 @@ npx themify help
 Run this to create a custom theme CSS file locally:
 
 ```
-npx themify blue-web -o my-theme.css
+themify blue-web -o my-theme.css
 ```
 
 Some prompts will guide you through the process.
@@ -29,7 +35,7 @@ Some prompts will guide you through the process.
 When your project not already has a full Bootstrap CSS file, run this to add one:
 
 ```
-npx themify compile --output bootstrap.min.css --full
+themify compile --output bootstrap.min.css --full
 ```
 
 ### Add theme
@@ -37,7 +43,7 @@ npx themify compile --output bootstrap.min.css --full
 Choose one of the styles
 
 ```
-npx themify compile -o variables.min.css -s new-york
+themify compile -o variables.min.css -s new-york
 ```
 
 ### Custom variables
@@ -52,7 +58,7 @@ $primary: yellow;
 Then run this:
 
 ```
-npx themify compile -o variables.min.css -s new-york --import-before my-vars.scss
+themify compile -o variables.min.css -s new-york --import-before my-vars.scss
 ```
 
 To override CSS variables, you set a file that should be imported after Bootstrap:
@@ -65,5 +71,5 @@ To override CSS variables, you set a file that should be imported after Bootstra
 ```
 
 ```
-npx themify compile -o variables.min.css -s new-york --import-before my-vars.scss --import-after my-css-vars.css
+themify compile -o variables.min.css -s new-york --import-before my-vars.scss --import-after my-css-vars.css
 ```

@@ -1,5 +1,5 @@
 {
-    "name": "themify",
+    "name": "themify-cli",
     "version": "1.0.0",
     "description": "CLI that helps you to add Bootstrap CSS and customize it",
     "keywords": [
@@ -9,7 +9,8 @@
         "css",
         "sass",
         "scss",
-        "themify"
+        "themify",
+        "themify-cli"
     ],
     "files": [
         "dist",
