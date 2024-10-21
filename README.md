@@ -1,6 +1,6 @@
 # Themify
 
-CLI that helps you to add Bootstrap CSS and customize it.
+CLI that helps you to add Blue Web or Bootstrap CSS and customize it.
 
 ## Install
 
